@@ -73,7 +73,7 @@ All video wallpapers run on continuous, strictly muted loops with zero lag, and 
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/<your-username>/aethel.git
+git clone https://github.com/nex-no1/aethel-.git
 cd aethel
 ```
 
@@ -97,17 +97,6 @@ This outputs a completely standalone, static `dist/` directory ready to be hoste
 ---
 
 ## ✦ Free Hosting Deployment
-
-### Deploy to Vercel (Recommended)
-1. Push this project to GitHub.
-2. Sign in to [Vercel](https://vercel.com) and import your repository.
-3. Vercel will automatically detect **Vite** (`npm run build` -> `dist`).
-4. Click **Deploy** — your site will be live on your own `.vercel.app` domain for free.
-
-### Deploy to Netlify
-1. Run `npm run build`.
-2. Go to [app.netlify.com/drop](https://app.netlify.com/drop) and drag the `dist` folder onto the page.
-3. Your site is live in 10 seconds.
 
 ---
 
