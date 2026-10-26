@@ -1,0 +1,6 @@
+{
+  "name": "Chronos Noir - Aesthetic Clock & Focus Dashboard",
+  "description": "A sleek, black-and-white study dashboard with customizable luxury clock typography, Pomodoro focus timer, Web Audio ambient soundscapes, and customizable wallpapers.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
