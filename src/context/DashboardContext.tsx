@@ -35,6 +35,8 @@ interface DashboardContextType {
   setCustomBackgroundUrl: (url: string | null) => void;
   customBackgroundData: string | null;
   setCustomBackgroundData: (data: string | null) => void;
+  customBackgroundIsVideo: boolean;
+  setCustomBackgroundIsVideo: (isVideo: boolean) => void;
 
   dimLevel: number; // 0 to 80
   setDimLevel: (val: number) => void;
@@ -49,23 +51,24 @@ interface DashboardContextType {
 
 const DashboardContext = createContext<DashboardContextType | null>(null);
 
-const STORAGE_KEY = 'minimal_aesthetic_clock_prefs_v3';
+const STORAGE_KEY = 'minimal_aesthetic_clock_prefs_v5';
 
 export const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [activeTab, setActiveTab] = useState<TabId>('clock');
 
-  // Preferences
-  const [clockFontId, setClockFontIdState] = useState<ClockFontId>('cormorant');
-  const [accentId, setAccentIdState] = useState<AccentColorId>('red');
+  // Preferences - default dimLevel=0 and blurLevel=0 for 100% original crisp quality
+  const [clockFontId, setClockFontIdState] = useState<ClockFontId>('syne');
+  const [accentId, setAccentIdState] = useState<AccentColorId>('monochrome');
   const [is24Hour, setIs24HourState] = useState<boolean>(false);
   const [showSeconds, setShowSecondsState] = useState<boolean>(true);
   const [showDate, setShowDateState] = useState<boolean>(true);
   const [timezone, setTimezoneState] = useState<string>('local');
 
-  const [backgroundId, setBackgroundIdState] = useState<string>('video-spirit-dragon');
+  const [backgroundId, setBackgroundIdState] = useState<string>('video-gojo-void');
   const [customBackgroundUrl, setCustomBackgroundUrlState] = useState<string | null>(null);
   const [customBackgroundData, setCustomBackgroundDataState] = useState<string | null>(null);
-  const [dimLevel, setDimLevelState] = useState<number>(20);
+  const [customBackgroundIsVideo, setCustomBackgroundIsVideoState] = useState<boolean>(false);
+  const [dimLevel, setDimLevelState] = useState<number>(0);
   const [blurLevel, setBlurLevelState] = useState<number>(0);
 
   const [isZenMode, setIsZenMode] = useState<boolean>(false);
@@ -85,7 +88,9 @@ export const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         if (parsed.timezone) setTimezoneState(parsed.timezone);
         if (parsed.backgroundId) setBackgroundIdState(parsed.backgroundId);
         if (parsed.customBackgroundUrl) setCustomBackgroundUrlState(parsed.customBackgroundUrl);
-        if (parsed.customBackgroundData) setCustomBackgroundDataState(parsed.customBackgroundData);
+        if (typeof parsed.customBackgroundIsVideo === 'boolean') {
+          setCustomBackgroundIsVideoState(parsed.customBackgroundIsVideo);
+        }
         if (typeof parsed.dimLevel === 'number') setDimLevelState(parsed.dimLevel);
         if (typeof parsed.blurLevel === 'number') setBlurLevelState(parsed.blurLevel);
       }
@@ -106,7 +111,7 @@ export const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         timezone,
         backgroundId,
         customBackgroundUrl,
-        customBackgroundData: customBackgroundData ? customBackgroundData.slice(0, 1000000) : null,
+        customBackgroundIsVideo,
         dimLevel,
         blurLevel,
       };
@@ -123,7 +128,7 @@ export const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     timezone,
     backgroundId,
     customBackgroundUrl,
-    customBackgroundData,
+    customBackgroundIsVideo,
     dimLevel,
     blurLevel,
   ]);
@@ -202,6 +207,8 @@ export const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         setCustomBackgroundUrl: setCustomBackgroundUrlState,
         customBackgroundData,
         setCustomBackgroundData: setCustomBackgroundDataState,
+        customBackgroundIsVideo,
+        setCustomBackgroundIsVideo: setCustomBackgroundIsVideoState,
         dimLevel,
         setDimLevel: setDimLevelState,
         blurLevel,

@@ -10,6 +10,107 @@ import {
 } from 'lucide-react';
 import { useDashboard } from '../context/DashboardContext';
 import { BACKGROUND_PRESETS, CLOCK_FONTS, ACCENT_THEMES } from '../data/presets';
+import { BackgroundOption } from '../types';
+
+interface WallpaperCardProps {
+  wallpaper: BackgroundOption;
+  isSelected: boolean;
+  accentPrimary: string;
+  onSelect: () => void;
+}
+
+const WallpaperVideoCard: React.FC<WallpaperCardProps> = ({
+  wallpaper,
+  isSelected,
+  accentPrimary,
+  onSelect,
+}) => {
+  const thumbVideoRef = useRef<HTMLVideoElement>(null);
+  const matchedFont = CLOCK_FONTS.find((f) => f.id === wallpaper.recommendedFont);
+  const matchedAccent = wallpaper.recommendedAccent
+    ? ACCENT_THEMES[wallpaper.recommendedAccent]
+    : null;
+
+  const handleMouseEnter = () => {
+    if (thumbVideoRef.current) {
+      thumbVideoRef.current.muted = true;
+      thumbVideoRef.current.play().catch(() => {});
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (thumbVideoRef.current) {
+      thumbVideoRef.current.pause();
+    }
+  };
+
+  return (
+    <div
+      onClick={onSelect}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      className={`group relative rounded-2xl overflow-hidden border cursor-pointer transition-colors ${
+        isSelected
+          ? 'border-white/70 ring-2 ring-white/40 shadow-2xl'
+          : 'border-white/10 hover:border-white/35 bg-black/50'
+      }`}
+    >
+      {/* Video thumbnail: pauses when not hovered so main background video keeps 100% 4K GPU bandwidth */}
+      <div className="relative w-full h-44 bg-neutral-950 overflow-hidden">
+        <video
+          ref={thumbVideoRef}
+          src={`${wallpaper.videoUrl}#t=0.1`}
+          loop
+          muted
+          playsInline
+          preload="metadata"
+          className="w-full h-full object-cover object-center pointer-events-none"
+        />
+
+        {/* Bottom Title Scrim */}
+        <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/90 via-black/45 to-transparent" />
+
+        {/* Selected checkmark */}
+        {isSelected && (
+          <div
+            className="absolute top-3 right-3 w-6 h-6 rounded-full flex items-center justify-center text-black font-bold shadow-lg"
+            style={{ backgroundColor: accentPrimary }}
+          >
+            <Check className="w-3.5 h-3.5 stroke-[3]" />
+          </div>
+        )}
+
+        {/* Title overlay */}
+        <div className="absolute bottom-2.5 left-3 right-3">
+          <span className="block text-sm font-semibold text-white drop-shadow-md">
+            {wallpaper.name}
+          </span>
+          <span className="block text-[11px] text-neutral-300 line-clamp-1">
+            {wallpaper.description}
+          </span>
+        </div>
+      </div>
+
+      {/* Footer with Matched Font & Accent info */}
+      <div className="p-2.5 bg-black/75 backdrop-blur-sm border-t border-white/5 flex items-center justify-between text-[11px] text-neutral-400">
+        <div className="flex items-center gap-1.5 truncate">
+          <span>Matched:</span>
+          <span className="text-white font-medium truncate">{matchedFont?.name}</span>
+        </div>
+
+        {matchedAccent && (
+          <div className="flex items-center gap-1 shrink-0 ml-2">
+            <span
+              className="w-2.5 h-2.5 rounded-full"
+              style={{ backgroundColor: matchedAccent.primary }}
+            />
+            <span>{matchedAccent.name}</span>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
 
 export const WallpapersTab: React.FC = () => {
   const {
@@ -19,6 +120,7 @@ export const WallpapersTab: React.FC = () => {
     setCustomBackgroundData,
     customBackgroundUrl,
     setCustomBackgroundUrl,
+    setCustomBackgroundIsVideo,
     dimLevel,
     setDimLevel,
     blurLevel,
@@ -35,17 +137,13 @@ export const WallpapersTab: React.FC = () => {
     if (!file) return;
 
     if (!file.type.startsWith('image/') && !file.type.startsWith('video/')) {
-      alert('Please select an image or video file.');
       return;
     }
 
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const result = event.target?.result as string;
-      setCustomBackgroundData(result);
-      setCustomBackgroundUrl(null);
-    };
-    reader.readAsDataURL(file);
+    const objectUrl = URL.createObjectURL(file);
+    setCustomBackgroundIsVideo(file.type.startsWith('video/'));
+    setCustomBackgroundData(objectUrl);
+    setCustomBackgroundUrl(null);
   };
 
   const handleApplyUrl = (e: React.FormEvent) => {
@@ -65,99 +163,43 @@ export const WallpapersTab: React.FC = () => {
   const clearCustom = () => {
     setCustomBackgroundData(null);
     setCustomBackgroundUrl(null);
+    setCustomBackgroundIsVideo(false);
     setUrlInput('');
     if (fileInputRef.current) fileInputRef.current.value = '';
-    selectWallpaper('video-spirit-dragon');
+    selectWallpaper('video-gojo-void');
   };
 
   const videoWallpapers = BACKGROUND_PRESETS.filter((b) => b.type === 'video');
 
   return (
-    <div className="relative z-10 w-full max-w-5xl mx-auto px-4 py-8 select-none">
-      {/* 7 Looping Video Wallpapers Showcase */}
+    <div className="relative z-10 w-full max-w-6xl mx-auto px-4 py-8 select-none">
+      {/* 16 Looping Video Wallpapers Showcase */}
       <div className="mb-10">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
             <Play className="w-4 h-4" style={{ color: currentAccent.primary }} />
             <h2 className="text-base font-semibold text-white tracking-wide">
-              Looping Video Wallpapers ({videoWallpapers.length})
+              4K & HD Looping Video Wallpapers ({videoWallpapers.length})
             </h2>
           </div>
-          <span className="text-xs text-neutral-400">All videos muted & looping</span>
+          <span className="text-xs text-neutral-400">
+            Hover card to preview · Click to apply in full 4K/HD quality
+          </span>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {videoWallpapers.map((wallpaper) => {
             const isSelected =
               backgroundId === wallpaper.id && !customBackgroundData && !customBackgroundUrl;
-            const matchedFont = CLOCK_FONTS.find((f) => f.id === wallpaper.recommendedFont);
-            const matchedAccent = wallpaper.recommendedAccent
-              ? ACCENT_THEMES[wallpaper.recommendedAccent]
-              : null;
 
             return (
-              <div
+              <WallpaperVideoCard
                 key={wallpaper.id}
-                onClick={() => selectWallpaper(wallpaper.id, true)}
-                className={`group relative rounded-2xl overflow-hidden border cursor-pointer transition-all ${
-                  isSelected
-                    ? 'border-white/60 ring-2 ring-white/40 shadow-2xl scale-[1.02]'
-                    : 'border-white/10 hover:border-white/30 bg-black/40 hover:scale-[1.01]'
-                }`}
-              >
-                {/* Looping video thumbnail (strictly muted) */}
-                <div className="relative w-full h-44 bg-neutral-900 overflow-hidden">
-                  <video
-                    src={wallpaper.videoUrl}
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 pointer-events-none"
-                  />
-
-                  {/* Gradient Scrim */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent" />
-
-                  {/* Selected checkmark */}
-                  {isSelected && (
-                    <div
-                      className="absolute top-3 right-3 w-6 h-6 rounded-full flex items-center justify-center text-black font-bold shadow-lg"
-                      style={{ backgroundColor: currentAccent.primary }}
-                    >
-                      <Check className="w-3.5 h-3.5 stroke-[3]" />
-                    </div>
-                  )}
-
-                  {/* Title overlay */}
-                  <div className="absolute bottom-2.5 left-3 right-3">
-                    <span className="block text-sm font-semibold text-white drop-shadow-md">
-                      {wallpaper.name}
-                    </span>
-                    <span className="block text-[11px] text-neutral-300 line-clamp-1">
-                      {wallpaper.description}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Footer with Matched Font & Accent info */}
-                <div className="p-2.5 bg-black/70 backdrop-blur-sm border-t border-white/5 flex items-center justify-between text-[11px] text-neutral-400">
-                  <div className="flex items-center gap-1.5 truncate">
-                    <span>Matched:</span>
-                    <span className="text-white font-medium truncate">{matchedFont?.name}</span>
-                  </div>
-
-                  {matchedAccent && (
-                    <div className="flex items-center gap-1 shrink-0 ml-2">
-                      <span
-                        className="w-2.5 h-2.5 rounded-full"
-                        style={{ backgroundColor: matchedAccent.primary }}
-                      />
-                      <span>{matchedAccent.name}</span>
-                    </div>
-                  )}
-                </div>
-              </div>
+                wallpaper={wallpaper}
+                isSelected={isSelected}
+                accentPrimary={currentAccent.primary}
+                onSelect={() => selectWallpaper(wallpaper.id, true)}
+              />
             );
           })}
         </div>
@@ -183,7 +225,7 @@ export const WallpapersTab: React.FC = () => {
             style={{ accentColor: currentAccent.primary }}
           />
           <p className="text-[11px] text-neutral-500 mt-2">
-            Darkens video wallpaper so clock numbers remain ultra-readable.
+            0% keeps 100% original video brightness & vibrancy.
           </p>
         </div>
 
@@ -205,12 +247,12 @@ export const WallpapersTab: React.FC = () => {
             style={{ accentColor: currentAccent.primary }}
           />
           <p className="text-[11px] text-neutral-500 mt-2">
-            Adds cinematic soft focus blur behind the clock numbers.
+            0px keeps 100% original crystal-clear sharpness.
           </p>
         </div>
       </div>
 
-      {/* Minimalist Presets & Custom Upload */}
+      {/* Custom Upload */}
       <div className="p-6 rounded-2xl bg-black/50 backdrop-blur-md border border-white/10 shadow-xl">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">

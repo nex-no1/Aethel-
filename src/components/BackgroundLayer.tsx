@@ -7,6 +7,7 @@ export const BackgroundLayer: React.FC = () => {
     backgroundId,
     customBackgroundData,
     customBackgroundUrl,
+    customBackgroundIsVideo,
     dimLevel,
     blurLevel,
   } = useDashboard();
@@ -19,7 +20,11 @@ export const BackgroundLayer: React.FC = () => {
   const hasCustomUpload = Boolean(customBackgroundData);
   const hasCustomUrl = Boolean(customBackgroundUrl);
 
-  // Guarantee that every video is strictly muted and autoplays smoothly
+  const isUrlVideo =
+    hasCustomUrl &&
+    /\.(mp4|webm|ogg|mov)(\?.*)?$/i.test(customBackgroundUrl || '');
+
+  // Guarantee that every video is strictly muted and autoplays at full native hardware quality
   useEffect(() => {
     if (videoRef.current) {
       videoRef.current.muted = true;
@@ -27,34 +32,63 @@ export const BackgroundLayer: React.FC = () => {
       videoRef.current.volume = 0;
       videoRef.current.play().catch(() => {});
     }
-  }, [backgroundId]);
+  }, [backgroundId, customBackgroundData, customBackgroundUrl]);
 
   return (
-    <div className="fixed inset-0 pointer-events-none select-none z-0 overflow-hidden bg-black transition-colors duration-700">
-      {/* Background Visual Surface (Video / Custom / CSS) */}
+    <div className="fixed inset-0 pointer-events-none select-none z-0 overflow-hidden bg-black">
+      {/* Background Visual Surface: 1:1 native pixel mapping with zero sub-pixel scale blur */}
       <div
-        className="absolute inset-0 w-full h-full transition-all duration-700 transform scale-[1.01]"
+        className="absolute inset-0 w-full h-full"
         style={{
-          filter: blurLevel > 0 ? `blur(${blurLevel}px)` : undefined,
+          filter: blurLevel > 0 ? `blur(${blurLevel}px)` : 'none',
+          transform: blurLevel > 0 ? 'scale(1.03)' : 'none',
         }}
       >
         {hasCustomUpload ? (
-          <img
-            src={customBackgroundData!}
-            alt="Custom wallpaper"
-            className="w-full h-full object-cover object-center"
-            referrerPolicy="no-referrer"
-          />
+          customBackgroundIsVideo ? (
+            <video
+              ref={videoRef}
+              key={customBackgroundData}
+              src={customBackgroundData!}
+              autoPlay
+              loop
+              muted
+              playsInline
+              preload="auto"
+              className="w-full h-full object-cover object-center"
+            />
+          ) : (
+            <img
+              src={customBackgroundData!}
+              alt="Custom wallpaper"
+              className="w-full h-full object-cover object-center"
+              referrerPolicy="no-referrer"
+            />
+          )
         ) : hasCustomUrl ? (
-          <img
-            src={customBackgroundUrl!}
-            alt="Custom wallpaper"
-            className="w-full h-full object-cover object-center"
-            referrerPolicy="no-referrer"
-            onError={(e) => {
-              e.currentTarget.style.display = 'none';
-            }}
-          />
+          isUrlVideo ? (
+            <video
+              ref={videoRef}
+              key={customBackgroundUrl}
+              src={customBackgroundUrl!}
+              autoPlay
+              loop
+              muted
+              playsInline
+              preload="auto"
+              className="w-full h-full object-cover object-center"
+            />
+          ) : (
+            <img
+              src={customBackgroundUrl!}
+              alt="Custom wallpaper"
+              className="w-full h-full object-cover object-center"
+              referrerPolicy="no-referrer"
+              onError={(e) => {
+                e.currentTarget.style.display = 'none';
+              }}
+            />
+          )
         ) : selectedPreset.type === 'video' && selectedPreset.videoUrl ? (
           <video
             ref={videoRef}
@@ -64,6 +98,7 @@ export const BackgroundLayer: React.FC = () => {
             loop
             muted
             playsInline
+            preload="auto"
             className="w-full h-full object-cover object-center"
           />
         ) : (
@@ -76,16 +111,15 @@ export const BackgroundLayer: React.FC = () => {
         )}
       </div>
 
-      {/* Dimmer Scrim for crisp clock legibility */}
-      <div
-        className="absolute inset-0 transition-opacity duration-300"
-        style={{
-          backgroundColor: `rgba(0, 0, 0, ${dimLevel / 100})`,
-        }}
-      />
-
-      {/* Subtle Cinematic Vignette */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_45%,rgba(0,0,0,0.65)_100%)] pointer-events-none" />
+      {/* Optional User-Controlled Dimmer (0% by default so video stays 100% crisp & vibrant) */}
+      {dimLevel > 0 && (
+        <div
+          className="absolute inset-0 transition-opacity duration-200"
+          style={{
+            backgroundColor: `rgba(0, 0, 0, ${dimLevel / 100})`,
+          }}
+        />
+      )}
     </div>
   );
 };
