@@ -44,3 +44,9 @@ cd aethel-
 # Install & ignite
 npm install
 npm run dev
+```
+<div align="center">
+
+Crafted by **[nex-no1](https://github.com/nex-no1)** · AI-Studio
+
+</div>
