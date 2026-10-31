@@ -1,108 +1,46 @@
 <div align="center">
 
-# Aethel`
+# AETHEL`
 
-<img src="https://i.pinimg.com/originals/df/e6/e4/dfe6e4b7a03407f8fba6ee8cf54dbfee.gif" alt="Aethel Banner" width="100%" style="border-radius: 12px; max-width: 800px;" />
+<img src="https://i.pinimg.com/originals/df/e6/e4/dfe6e4b7a03407f8fba6ee8cf54dbfee.gif" alt="Aethel Banner" width="100%" style="border-radius: 12px; max-width: 720px;" />
 
-### *created by **Nex`***
+<br/><br/>
 
-<p align="center">
-  <strong>A minimalist aesthetic clock, focus timer, and animated video wallpaper experience.</strong>
-  <br />
-  <em>Distraction-free · 7 Looping Anime & Dark Fantasy Wallpapers · Fully Muted · Zero Lag</em>
-</p>
+[![React](https://img.shields.io/badge/React_19-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](#)
+[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](#)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS_v4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](#)
+[![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)](#)
+[![Status](https://img.shields.io/badge/Zero_Server-100%25_Client_Side-00D26A?style=for-the-badge)](#)
+
+<br/>
+
+### *Ambient workspace aesthetics meets relentless focus.*
+
+**Cinematic Video Loops · High-Precision Focus Engine · Bespoke Typography · Zero Clutter**
 
 </div>
 
 ---
 
-## ✦ Overview
+## ⚡ The Vibe
 
-**Aethel`** is a sleek, distraction-free web dashboard designed for study, work, and ambient desk setups. It pairs high-definition looping anime and dark aesthetic video wallpapers with customizable luxury typography, countdown modes, and zero-clutter minimalism.
+**Aethel`** turns your monitor into an art piece while keeping your workflow sharp. Built for desk setups, deep work, and late-night study sessions:
 
-All video wallpapers run on continuous, strictly muted loops with zero lag, and the entire app is 100% client-side with no external server or account required.
-
----
-
-## ✦ Features
-
-- **7 Looping Video Wallpapers (Strictly Muted & Lag-Free)**:
-  - *Spirit Dragon Maiden* — Horned anime swordswoman with glowing spirit dragon flames
-  - *Dark Crown King* — Blindfolded sovereign with radiant golden crown in crimson haze
-  - *Thorns & Halo* — Surrealist barbed wire, weeping shadow, and scarlet sky
-  - *Ultra Ego Vegeta* — Dark silhouette with pulsing destruction Hakai aura
-  - *Shadow Samurai* — High-contrast black-and-white ink katana animation
-  - *Mythic Temple Dragon* — Colossal dragon descending before warrior on misty bridge
-  - *Midnight Drift* — Anime JDM tunnel drift with tire smoke and retro neon
-- **Minimalist Timer Modes**:
-  - **Pomodoro** (25m Focus / 5m Short Break / 15m Long Break with auto-round tracking)
-  - **Custom Countdown** (Quick presets: 5m, 10m, 15m, 25m, 30m, 45m, 60m)
-  - **Stopwatch** (Millisecond precision with lap recording)
-- **Clock Typography Studio**:
-  - *Cinzel Imperial* (Roman classical serif)
-  - *Cormorant Editorial* (High-fashion delicate serif)
-  - *Orbitron Cyber* (Futuristic angular digital)
-  - *Outfit Geometric* (Modern Scandinavian minimal)
-  - *JetBrains Code* (Tabular developer monospace)
-  - *Bodoni Horlogerie* (Luxury timepiece serif)
-  - *Syne Display* (Avant-garde bold display)
-  - *Jakarta Minimal* (Distraction-free Swiss sans)
-- **Smart Style Matching**:
-  - Automatically adapts the clock font and accent theme to complement whichever wallpaper is active, while still allowing full manual overrides.
-- **Atmosphere & Legibility Controls**:
-  - **Background Dimmer (0–80%)**: Ensures clock numbers remain readable over any wallpaper.
-  - **Soft Focus Blur (0–16px)**: Creates a cinematic depth-of-field bokeh effect.
-- **Custom Wallpaper Support**:
-  - Upload your own video or image files directly or paste any direct media URL.
-- **Pure Minimalism**:
-  - Distraction-free Zen mode, 12h/24h toggle, seconds toggle, date toggle, and timezone selector.
+* 🌌 **4K/HD Video Loops** — Handpicked anime & dark fantasy motion backgrounds running strictly lag-free.
+* ⏳ **Precision Focus Engine** — Integrated Pomodoro cycles, instant countdown presets, and millisecond-accurate stopwatch.
+* 🖋️ **Curated Typography Studio** — 8 hand-selected luxury, brutalist, and monospace typefaces tuned for readability.
+* 🎛️ **Cinematic Overlays** — Real-time vignette, live background dimmer (0–80%), and bokeh blur controls.
+* 🚀 **Zero Friction** — No accounts, no backend tracking, pure static performance directly in the browser.
 
 ---
 
-## ✦ Tech Stack
+## 🚀 Quick Launch
 
-- **Framework**: React 19 + TypeScript
-- **Styling**: Tailwind CSS v4
-- **Bundler**: Vite
-- **Icons**: Lucide React
-- **Hosting**: Static single-page application (Deployable on Vercel, Netlify, or GitHub Pages for free)
-
----
-
-## ✦ Quick Start
-
-### 1. Clone the repository
 ```bash
-git clone https://github.com/nex-no1/aethel-.git
-cd aethel
-```
+# Clone the repository
+git clone [https://github.com/nex-no1/aethel-.git](https://github.com/nex-no1/aethel-.git)
+cd aethel-
 
-### 2. Install dependencies
-```bash
+# Install & ignite
 npm install
-```
-
-### 3. Run development server
-```bash
 npm run dev
-```
-Open [http://localhost:3000](http://localhost:3000) in your browser.
-
-### 4. Build for production
-```bash
-npm run build
-```
-This outputs a completely standalone, static `dist/` directory ready to be hosted anywhere.
-
----
-
-## ✦ Free Hosting Deployment
-
----
-
-<div align="center">
-
-**Created by Nex`**  
-*Designed for aesthetic workspaces, deep study sessions, and ambient desk setups.*
-
-</div>
