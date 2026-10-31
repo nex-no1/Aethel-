@@ -14,6 +14,11 @@
 
 <br/>
 
+
+<img width="800" height="304" alt="Image" src="https://github.com/user-attachments/assets/8849944d-1b97-49ee-9853-4b4be7b8d8a8" />
+
+
+
 ### *Ambient workspace aesthetics meets relentless focus.*
 
 **https://aethel-mauve.vercel.app/**
