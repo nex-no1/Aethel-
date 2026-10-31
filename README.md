@@ -16,7 +16,7 @@
 
 ### *Ambient workspace aesthetics meets relentless focus.*
 
-**Cinematic Video Loops · High-Precision Focus Engine · Bespoke Typography · Zero Clutter**
+**https://aethel-mauve.vercel.app/**
 
 </div>
 
